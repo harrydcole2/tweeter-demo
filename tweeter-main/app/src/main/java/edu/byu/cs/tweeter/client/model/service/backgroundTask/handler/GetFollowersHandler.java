@@ -29,7 +29,7 @@ public class GetFollowersHandler extends Handler {
     public void handleMessage(@NonNull Message msg) {
         boolean success = msg.getData().getBoolean(GetFollowingTask.SUCCESS_KEY);
         if (success) {
-            List<User> followers = (List<User>) msg.getData().getSerializable(GetFollowersTask.FOLLOWERS_KEY);
+            List<User> followers = (List<User>) msg.getData().getSerializable(GetFollowersTask.ITEMS_KEY);
             boolean hasMorePages = msg.getData().getBoolean(GetFollowingTask.MORE_PAGES_KEY);
             observer.addMoreFollowers(followers, hasMorePages);
         } else if (msg.getData().containsKey(GetFollowingTask.MESSAGE_KEY)) {
