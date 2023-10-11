@@ -10,7 +10,6 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class LoginPresenter extends AuthenticationPresenter {
 
-    private View view;
     public interface View extends AuthView {}
     public LoginPresenter(LoginPresenter.View view) {
         this.view = view;
@@ -42,17 +41,7 @@ public class LoginPresenter extends AuthenticationPresenter {
         }
     }
 
-    private class LoginServiceObserver implements UserService.LoginObserver {
-        @Override
-        public void handleError(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayMessage("Failed to get user's profile because of exception: " + ex.getMessage());
-        }
-
+    private class LoginServiceObserver extends BaseServiceObserver implements UserService.LoginObserver {
         @Override
         public void startActivity(Bundle data) {
             User loggedInUser = (User) data.getSerializable(LoginTask.USER_KEY);
@@ -63,6 +52,11 @@ public class LoginPresenter extends AuthenticationPresenter {
             Cache.getInstance().setCurrUserAuthToken(authToken);
 
             view.startNewActivity(Cache.getInstance().getCurrUser().getName(), loggedInUser);
+        }
+
+        @Override
+        protected String getTaskString() {
+            return "get user's profile";
         }
     }
 }

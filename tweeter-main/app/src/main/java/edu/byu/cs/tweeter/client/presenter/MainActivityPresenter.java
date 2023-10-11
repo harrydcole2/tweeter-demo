@@ -23,6 +23,8 @@ public class MainActivityPresenter extends BasePresenter{
         Cache.getInstance().clearCache();
     }
 
+    private View view;
+
     public interface View extends BaseView {
         void setupFollowButton(boolean isFollower);
         
@@ -38,8 +40,6 @@ public class MainActivityPresenter extends BasePresenter{
 
         void setFollowingCount(int count);
     }
-
-    private View view;
 
     public MainActivityPresenter(MainActivityPresenter.View view) {
         this.view = view;
@@ -200,75 +200,51 @@ public class MainActivityPresenter extends BasePresenter{
         }
     }
 
-    private class LogoutServiceObserver implements UserService.LogoutObserver {
-
-        @Override
-        public void handleError(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayMessage("Failed to logout because of exception: " + ex.getMessage());
-        }
-
+    private class LogoutServiceObserver extends BaseServiceObserver implements UserService.LogoutObserver {
         @Override
         public void logout() {
             view.logoutUser();
         }
+
+        @Override
+        protected String getTaskString() {
+            return "logout";
+        }
     }
 
-    private class PostStatusServiceObserver implements StatusService.PostStatusObserver {
-
-        @Override
-        public void handleError(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayMessage("Failed to post status because of exception: " + ex.getMessage());
-        }
-
+    private class PostStatusServiceObserver extends BaseServiceObserver implements StatusService.PostStatusObserver {
         @Override
         public void displaySuccess(String message) {
             view.displayMessage(message);
         }
+
+        @Override
+        protected String getTaskString() {
+            return "post status";
+        }
     }
 
-    private class GetFollowersCountObserver implements FollowService.GetFollowersCountObserver {
-
-        @Override
-        public void handleError(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayMessage("Failed to get followers count because of exception: " + ex.getMessage());
-        }
-
+    private class GetFollowersCountObserver extends BaseServiceObserver implements FollowService.GetFollowersCountObserver {
         @Override
         public void displayFollowersCount(int count) {
             view.setFollowerCount(count);
         }
+
+        @Override
+        protected String getTaskString() {
+            return "get followers count";
+        }
     }
 
-    private class GetFollowingCountObserver implements FollowService.GetFollowingCountObserver {
-
-        @Override
-        public void handleError(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayMessage("Failed to get following count because of exception: " + ex.getMessage());
-        }
-
+    private class GetFollowingCountObserver extends BaseServiceObserver implements FollowService.GetFollowingCountObserver {
         @Override
         public void displayFollowingCount(int count) {
             view.setFollowingCount(count);
+        }
+
+        @Override
+        protected String getTaskString() {
+            return "get following count";
         }
     }
 }

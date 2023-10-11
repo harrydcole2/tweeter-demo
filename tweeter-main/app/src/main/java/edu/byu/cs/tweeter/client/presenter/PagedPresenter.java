@@ -13,8 +13,9 @@ public abstract class PagedPresenter<T> extends BasePresenter {
     protected T lastItem;
 
     protected boolean hasMorePages;
-
     protected boolean isLoading = false;
+
+    protected PagedView<T> view;
 
     public interface PagedView<S> extends BaseView {
         void setLoadingFooter(boolean value);

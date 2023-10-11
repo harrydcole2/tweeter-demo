@@ -12,8 +12,6 @@ import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class StoryPresenter extends PagedPresenter<Status> {
-    private View view;
-
     public StoryPresenter(StoryPresenter.View view) {
         this.view = view;
     }
@@ -60,21 +58,15 @@ public class StoryPresenter extends PagedPresenter<Status> {
         }
     }
 
-    private class UserServiceObserver implements UserService.UserObserver {
-
-        @Override
-        public void handleError(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayMessage("Failed to get user's profile because of exception: " + ex.getMessage());
-        }
-
+    private class UserServiceObserver extends BaseServiceObserver implements UserService.UserObserver {
         @Override
         public void startActivity(Bundle bundle) {
             view.startMainActivity(bundle);
+        }
+
+        @Override
+        protected String getTaskString() {
+            return "get user's profile";
         }
     }
 }

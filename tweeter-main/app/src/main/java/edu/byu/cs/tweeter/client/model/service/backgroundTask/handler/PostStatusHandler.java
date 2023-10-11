@@ -19,6 +19,5 @@ public class PostStatusHandler extends BackgroundTaskHandler<StatusService.PostS
     @Override
     protected void handleSuccessMessage(StatusService.PostStatusObserver observer, Bundle data) {
         observer.displaySuccess("Successfully Posted!");
-
     }
 }

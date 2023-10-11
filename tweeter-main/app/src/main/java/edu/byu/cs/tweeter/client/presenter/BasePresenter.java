@@ -14,6 +14,8 @@ public abstract class BasePresenter {
     protected FollowService followService;
     protected UserService userService;
     protected StatusService statusService;
+
+    protected BaseView view;
     public interface BaseView {
         void displayMessage(String message);
     }
@@ -22,4 +24,20 @@ public abstract class BasePresenter {
         this.userService = new UserService();
         this.statusService = new StatusService();
     }
+
+    protected abstract class BaseServiceObserver implements ServiceObserver {
+        @Override
+        public void handleError(String message) {
+            view.displayMessage(message);
+        }
+
+        @Override
+        public void handleException(Exception ex) {
+            view.displayMessage("Failed to " + getTaskString() + " because of exception: " + ex.getMessage());
+        }
+
+        protected abstract String getTaskString();
+    }
+
+    //protected abstract void errorPrefix(); //needed sometimes?
 }

@@ -62,17 +62,7 @@ public class RegisterPresenter extends AuthenticationPresenter {
         userService.register(firstName, lastName, alias, password, imageBytesBase64, new RegisterServiceObserver());
     }
 
-    private class RegisterServiceObserver implements UserService.RegisterObserver {
-        @Override
-        public void handleError(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayMessage("Failed to register because of exception: " + ex.getMessage());
-        }
-
+    private class RegisterServiceObserver extends BaseServiceObserver implements UserService.RegisterObserver {
         @Override
         public void startActivity(Bundle data) {
             User registeredUser = (User) data.getSerializable(RegisterTask.USER_KEY);
@@ -82,6 +72,11 @@ public class RegisterPresenter extends AuthenticationPresenter {
             Cache.getInstance().setCurrUserAuthToken(authToken);
 
             view.startNewActivity(Cache.getInstance().getCurrUser().getName(), registeredUser);
+        }
+
+        @Override
+        protected String getTaskString() {
+            return "register";
         }
     }
 }
