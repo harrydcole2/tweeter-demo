@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.client.presenter;
 
+import android.os.Bundle;
 import android.os.Message;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public class StoryPresenter {
 
         void addMoreStatuses(List<Status> statuses);
 
-        void startMainActivity(Message msg);
+        void startMainActivity(Bundle bundle);
     }
 
     private class StoryServiceObserver implements StatusService.StoryObserver {
@@ -99,8 +100,8 @@ public class StoryPresenter {
         }
 
         @Override
-        public void startActivity(Message msg) {
-            view.startMainActivity(msg);
+        public void startActivity(Bundle bundle) {
+            view.startMainActivity(bundle);
         }
     }
 }

@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.client.model.service.backgroundTask.handler;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -8,28 +9,19 @@ import androidx.annotation.NonNull;
 
 import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowingCountTask;
+import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 
-public class GetFollowingCountHandler extends Handler {
-
-    FollowService.GetFollowingCountObserver observer;
+public class GetFollowingCountHandler extends BackgroundTaskHandler {
 
     public GetFollowingCountHandler(FollowService.GetFollowingCountObserver observer) {
-        super(Looper.getMainLooper());
-        this.observer = observer;
+        super(observer);
     }
-
     @Override
-    public void handleMessage(@NonNull Message msg) {
-        boolean success = msg.getData().getBoolean(GetFollowingCountTask.SUCCESS_KEY);
-        if (success) {
-            int count = msg.getData().getInt(GetFollowingCountTask.COUNT_KEY);
-            observer.displayFollowingCount(count);
-        } else if (msg.getData().containsKey(GetFollowingCountTask.MESSAGE_KEY)) {
-            String message = msg.getData().getString(GetFollowingCountTask.MESSAGE_KEY);
-            observer.displayError("Failed to get following count: " + message);
-        } else if (msg.getData().containsKey(GetFollowingCountTask.EXCEPTION_KEY)) {
-            Exception ex = (Exception) msg.getData().getSerializable(GetFollowingCountTask.EXCEPTION_KEY);
-            observer.displayException(ex);
-        }
+    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
+        FollowService.GetFollowingCountObserver followingCountObserver =
+                (FollowService.GetFollowingCountObserver) observer;
+
+        int count = data.getInt(GetFollowingCountTask.COUNT_KEY);
+        followingCountObserver.displayFollowingCount(count);
     }
 }

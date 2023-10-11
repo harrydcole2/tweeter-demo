@@ -110,8 +110,8 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
     }
 
     @Override
-    public void startMainActivity(Message msg) {
-        User user = (User) msg.getData().getSerializable(GetUserTask.USER_KEY);
+    public void startMainActivity(Bundle data) {
+        User user = (User) data.getSerializable(GetUserTask.USER_KEY);
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
         startActivity(intent);

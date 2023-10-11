@@ -12,6 +12,7 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowingCountT
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowingTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.IsFollowerTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.UnfollowTask;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.BackgroundTaskHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.FollowHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowersCountHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowersHandler;
@@ -19,70 +20,37 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowi
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowingHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.IsFollowerHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.UnfollowHandler;
+import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class FollowService {
 
-    public interface FolloweesObserver {
-
-        void displayError(String message);
-
-        void displayException(Exception ex);
-
+    public interface FolloweesObserver extends ServiceObserver {
         void addMoreFollowees(List<User> followees, boolean hasMorePages);
     }
 
-    public interface FollowersObserver {
-
-        void displayError(String message);
-
-        void displayException(Exception ex);
-
+    public interface FollowersObserver extends ServiceObserver {
         void addMoreFollowers(List<User> followees, boolean hasMorePages);
     }
 
-    public interface IsFollowerObserver {
-        void displayError(String message);
-
-        void displayException(Exception ex);
-
+    public interface IsFollowerObserver extends ServiceObserver {
         void setupFollowButton(boolean isFollower);
     }
 
-    public interface FollowObserver {
-
-        void displayError(String message);
-
-        void displayException(Exception ex);
-
+    public interface FollowObserver extends ServiceObserver {
         void updateSelectedUserFollowingAndFollowers();
     }
 
-    public interface UnfollowObserver {
-
-        void displayError(String message);
-
-        void displayException(Exception ex);
-
+    public interface UnfollowObserver extends ServiceObserver {
         void updateSelectedUserFollowingAndFollowers();
     }
 
-    public interface GetFollowersCountObserver {
-
-        void displayError(String message);
-
-        void displayException(Exception ex);
-
+    public interface GetFollowersCountObserver extends ServiceObserver {
         void displayFollowersCount(int count);
     }
 
-    public interface GetFollowingCountObserver {
-
-        void displayError(String message);
-
-        void displayException(Exception ex);
-
+    public interface GetFollowingCountObserver extends ServiceObserver {
         void displayFollowingCount(int count);
     }
     public void loadMoreItemsForFollowing(AuthToken currUserAuthToken, User user, int pageSize, User lastFollowee, FolloweesObserver observer) {
@@ -93,7 +61,7 @@ public class FollowService {
     }
 
     public void loadMoreItemsForFollowers(AuthToken currUserAuthToken, User user, int pageSize, User lastFollower, FollowersObserver observer) {
-        GetFollowersTask getFollowersTask = new GetFollowersTask(currUserAuthToken, //TODO: Send to shadow realm
+        GetFollowersTask getFollowersTask = new GetFollowersTask(currUserAuthToken,
                 user, pageSize, lastFollower, new GetFollowersHandler(observer));
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(getFollowersTask);

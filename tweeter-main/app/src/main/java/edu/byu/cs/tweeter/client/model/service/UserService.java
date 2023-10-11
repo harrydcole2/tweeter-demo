@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.client.model.service;
 
+import android.os.Bundle;
 import android.os.Message;
 
 import java.util.concurrent.ExecutorService;
@@ -13,40 +14,24 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetUserHan
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.LoginHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.LogoutHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.RegisterHandler;
+import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 
 public class UserService {
 
-    public interface UserObserver {
-
-        void displayError(String message);
-
-        void displayException(Exception ex);
-
-        void startActivity(Message msg);
+    public interface UserObserver extends ServiceObserver {
+        void startActivity(Bundle bundle);
     }
 
-    public interface LoginObserver {
-        void displayError(String message);
-
-        void displayException(Exception ex);
-
-        void loginToActivity(Message msg);
+    public interface LoginObserver extends ServiceObserver {
+        void loginToActivity(Bundle bundle);
     }
 
-    public interface RegisterObserver {
-        void displayError(String message);
-
-        void displayException(Exception ex);
-
-        void registerToActivity(Message msg);
+    public interface RegisterObserver extends ServiceObserver {
+        void registerToActivity(Bundle bundle);
     }
 
-    public interface LogoutObserver {
-        void displayError(String message);
-
-        void displayException(Exception ex);
-
+    public interface LogoutObserver extends ServiceObserver {
         void logout();
     }
 

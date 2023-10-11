@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.client.model.service.backgroundTask.handler;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -8,27 +9,16 @@ import androidx.annotation.NonNull;
 
 import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.UnfollowTask;
+import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 
-public class UnfollowHandler extends Handler {
-
-    private FollowService.UnfollowObserver observer;
-
+public class UnfollowHandler extends BackgroundTaskHandler {
     public UnfollowHandler(FollowService.UnfollowObserver observer) {
-        super(Looper.getMainLooper());
-        this.observer = observer;
+        super(observer);
     }
-
     @Override
-    public void handleMessage(@NonNull Message msg) {
-        boolean success = msg.getData().getBoolean(UnfollowTask.SUCCESS_KEY);
-        if (success) {
-            observer.updateSelectedUserFollowingAndFollowers();
-        } else if (msg.getData().containsKey(UnfollowTask.MESSAGE_KEY)) {
-            String message = msg.getData().getString(UnfollowTask.MESSAGE_KEY);
-            observer.displayError("Failed to unfollow: " + message);
-        } else if (msg.getData().containsKey(UnfollowTask.EXCEPTION_KEY)) {
-            Exception ex = (Exception) msg.getData().getSerializable(UnfollowTask.EXCEPTION_KEY);
-            observer.displayException(ex);
-        }
+    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
+        FollowService.UnfollowObserver unfollowObserver = (FollowService.UnfollowObserver) observer;
+
+        unfollowObserver.updateSelectedUserFollowingAndFollowers();
     }
 }

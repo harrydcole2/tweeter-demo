@@ -112,7 +112,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
     }
 
     @Override
-    public void registerToActivity(Message msg, String name, User registeredUser) {
+    public void registerToActivity(String name, User registeredUser) {
         registeringToast = Toast.makeText(getContext(), "Registering...", Toast.LENGTH_LONG); //moved from onCreateView
         registeringToast.show();
 

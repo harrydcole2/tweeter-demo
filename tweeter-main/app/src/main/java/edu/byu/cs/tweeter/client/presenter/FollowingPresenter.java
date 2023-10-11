@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.client.presenter;
 
+import android.os.Bundle;
 import android.os.Message;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class FollowingPresenter {
 
         void addMoreFollowees(List<User> followees);
 
-        void startMainActivity(Message msg);
+        void startMainActivity(Bundle bundle);
     }
 
     private View view;
@@ -101,8 +102,8 @@ public class FollowingPresenter {
         }
 
         @Override
-        public void startActivity(Message msg) {
-            view.startMainActivity(msg);
+        public void startActivity(Bundle bundle) {
+            view.startMainActivity(bundle);
         }
     }
 }

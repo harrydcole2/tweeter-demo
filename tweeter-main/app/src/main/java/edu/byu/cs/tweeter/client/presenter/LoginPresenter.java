@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.client.presenter;
 
+import android.os.Bundle;
 import android.os.Message;
 
 import edu.byu.cs.tweeter.client.cache.Cache;
@@ -13,7 +14,7 @@ public class LoginPresenter {
     public interface View {
         void displayMessage(String message);
 
-        void loginToActivity(Message msg, String name, User loggedInUser);
+        void loginToActivity(String name, User loggedInUser);
 
         void setErrowViewText(String text);
 
@@ -68,15 +69,15 @@ public class LoginPresenter {
         }
 
         @Override
-        public void loginToActivity(Message msg) {
-            User loggedInUser = (User) msg.getData().getSerializable(LoginTask.USER_KEY);
-            AuthToken authToken = (AuthToken) msg.getData().getSerializable(LoginTask.AUTH_TOKEN_KEY);
+        public void loginToActivity(Bundle data) {
+            User loggedInUser = (User) data.getSerializable(LoginTask.USER_KEY);
+            AuthToken authToken = (AuthToken) data.getSerializable(LoginTask.AUTH_TOKEN_KEY);
 
             // Cache user session information
             Cache.getInstance().setCurrUser(loggedInUser);
             Cache.getInstance().setCurrUserAuthToken(authToken);
 
-            view.loginToActivity(msg, Cache.getInstance().getCurrUser().getName(), loggedInUser);
+            view.loginToActivity(Cache.getInstance().getCurrUser().getName(), loggedInUser);
         }
     }
 }

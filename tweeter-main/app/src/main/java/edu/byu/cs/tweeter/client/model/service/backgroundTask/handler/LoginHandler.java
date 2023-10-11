@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.client.model.service.backgroundTask.handler;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -8,29 +9,20 @@ import androidx.annotation.NonNull;
 
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.LoginTask;
+import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 
 /**
  * Message handler (i.e., observer) for LoginTask
  */
-public class LoginHandler extends Handler {
-    private UserService.LoginObserver observer;
-
+public class LoginHandler extends BackgroundTaskHandler {
     public LoginHandler(UserService.LoginObserver observer) {
-        super(Looper.getMainLooper());
-        this.observer = observer;
+        super(observer);
     }
 
     @Override
-    public void handleMessage(@NonNull Message msg) {
-        boolean success = msg.getData().getBoolean(LoginTask.SUCCESS_KEY);
-        if (success) {
-            observer.loginToActivity(msg);
-        } else if (msg.getData().containsKey(LoginTask.MESSAGE_KEY)) {
-            String message = msg.getData().getString(LoginTask.MESSAGE_KEY);
-            observer.displayError("Failed to login: " + message);
-        } else if (msg.getData().containsKey(LoginTask.EXCEPTION_KEY)) {
-            Exception ex = (Exception) msg.getData().getSerializable(LoginTask.EXCEPTION_KEY);
-            observer.displayException(ex);
-        }
+    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
+        UserService.LoginObserver loginObserver = (UserService.LoginObserver) observer;
+
+        loginObserver.loginToActivity(data);
     }
 }

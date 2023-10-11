@@ -1,5 +1,8 @@
 package edu.byu.cs.tweeter.client.presenter;
 
+import android.os.Bundle;
+import android.os.Message;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -178,7 +181,6 @@ public class MainActivityPresenter {
             view.displayMessage("Failed to follow because of exception: " + ex.getMessage());
             view.enableFollowButton();
         }
-
         @Override
         public void updateSelectedUserFollowingAndFollowers() {
             view.updateSelectedUserFollowingAndFollowers();

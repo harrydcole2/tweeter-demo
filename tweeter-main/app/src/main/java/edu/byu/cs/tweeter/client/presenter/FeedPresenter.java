@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.client.presenter;
 
+import android.os.Bundle;
 import android.os.Message;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class FeedPresenter {
 
         void addMoreStatuses(List<Status> statuses);
 
-        void startMainActivity(Message msg);
+        void startMainActivity(Bundle bundle);
     }
     public void loadMoreItems(User user) {
         if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
@@ -97,8 +98,8 @@ public class FeedPresenter {
         }
 
         @Override
-        public void startActivity(Message msg) {
-            view.startMainActivity(msg);
+        public void startActivity(Bundle bundle) {
+            view.startMainActivity(bundle);
         }
     }
 }

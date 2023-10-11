@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.client.model.service.backgroundTask.handler;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -8,27 +9,17 @@ import androidx.annotation.NonNull;
 
 import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.FollowTask;
+import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 
-public class FollowHandler extends Handler {
-
-    private FollowService.FollowObserver observer;
+public class FollowHandler extends BackgroundTaskHandler {
 
     public FollowHandler(FollowService.FollowObserver observer) {
-        super(Looper.getMainLooper());
-        this.observer = observer;
+        super(observer);
     }
-
     @Override
-    public void handleMessage(@NonNull Message msg) {
-        boolean success = msg.getData().getBoolean(FollowTask.SUCCESS_KEY);
-        if (success) {
-            observer.updateSelectedUserFollowingAndFollowers();
-        } else if (msg.getData().containsKey(FollowTask.MESSAGE_KEY)) {
-            String message = msg.getData().getString(FollowTask.MESSAGE_KEY);
-            observer.displayError("Failed to follow: " + message);
-        } else if (msg.getData().containsKey(FollowTask.EXCEPTION_KEY)) {
-            Exception ex = (Exception) msg.getData().getSerializable(FollowTask.EXCEPTION_KEY);
-            observer.displayException(ex);
-        }
+    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
+        FollowService.FollowObserver followObserver = (FollowService.FollowObserver) observer;
+
+        followObserver.updateSelectedUserFollowingAndFollowers();
     }
 }

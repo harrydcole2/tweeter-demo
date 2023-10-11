@@ -1,6 +1,7 @@
 package edu.byu.cs.tweeter.client.presenter;
 
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Message;
 
 import edu.byu.cs.tweeter.client.cache.Cache;
@@ -14,7 +15,7 @@ public class RegisterPresenter {
     public interface View {
         void displayMessage(String message);
 
-        void registerToActivity(Message msg, String name, User registeredUser);
+        void registerToActivity(String name, User registeredUser);
 
         void setErrowViewText(String text);
 
@@ -86,14 +87,14 @@ public class RegisterPresenter {
         }
 
         @Override
-        public void registerToActivity(Message msg) {
-            User registeredUser = (User) msg.getData().getSerializable(RegisterTask.USER_KEY);
-            AuthToken authToken = (AuthToken) msg.getData().getSerializable(RegisterTask.AUTH_TOKEN_KEY);
+        public void registerToActivity(Bundle data) {
+            User registeredUser = (User) data.getSerializable(RegisterTask.USER_KEY);
+            AuthToken authToken = (AuthToken) data.getSerializable(RegisterTask.AUTH_TOKEN_KEY);
 
             Cache.getInstance().setCurrUser(registeredUser);
             Cache.getInstance().setCurrUserAuthToken(authToken);
 
-            view.registerToActivity(msg, Cache.getInstance().getCurrUser().getName(), registeredUser);
+            view.registerToActivity(Cache.getInstance().getCurrUser().getName(), registeredUser);
         }
     }
 }
