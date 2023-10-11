@@ -1,8 +1,5 @@
 package edu.byu.cs.tweeter.client.presenter;
 
-import android.os.Bundle;
-import android.os.Message;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -67,7 +64,7 @@ public class MainActivityPresenter {
             followService.unfollow(selectedUser, Cache.getInstance().getCurrUserAuthToken(), new UnfollowObserver());
         } else {
             view.displayMessage("Adding " + selectedUser.getName());
-            followService.follow(selectedUser, Cache.getInstance().getCurrUserAuthToken(), new FollowObserver());
+            followService.follow(selectedUser, Cache.getInstance().getCurrUserAuthToken(), new ChangeFollowObserver());
         }
     }
 
@@ -168,7 +165,7 @@ public class MainActivityPresenter {
         }
     }
 
-    private class FollowObserver implements FollowService.FollowObserver {
+    private class ChangeFollowObserver implements FollowService.ChangeFollowObserver {
 
         @Override
         public void handleError(String message) {
@@ -208,7 +205,6 @@ public class MainActivityPresenter {
             view.updateSelectedUserFollowingAndFollowers();
             view.updateFollowButton(true);
             view.enableFollowButton();
-
         }
     }
 
@@ -240,7 +236,6 @@ public class MainActivityPresenter {
         @Override
         public void handleException(Exception ex) {
             view.displayMessage("Failed to post status because of exception: " + ex.getMessage());
-
         }
 
         @Override

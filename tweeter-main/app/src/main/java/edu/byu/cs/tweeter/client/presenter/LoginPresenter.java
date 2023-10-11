@@ -69,7 +69,7 @@ public class LoginPresenter {
         }
 
         @Override
-        public void loginToActivity(Bundle data) {
+        public void startActivity(Bundle data) {
             User loggedInUser = (User) data.getSerializable(LoginTask.USER_KEY);
             AuthToken authToken = (AuthToken) data.getSerializable(LoginTask.AUTH_TOKEN_KEY);
 

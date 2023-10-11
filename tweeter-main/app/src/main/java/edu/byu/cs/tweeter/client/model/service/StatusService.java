@@ -16,15 +16,11 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class StatusService {
+public class StatusService extends BaseService {
 
-    public interface FeedObserver extends PagedObserver<Status> {
-        //void addMoreStatusesToFeed(List<Status> statuses, boolean hasMorePages);
-    }
+    public interface FeedObserver extends PagedObserver<Status> {}
 
-    public interface StoryObserver extends PagedObserver<Status> {
-        //void addMoreStatusesToStory(List<Status> statuses, boolean hasMorePages);
-    }
+    public interface StoryObserver extends PagedObserver<Status> {}
 
     public interface PostStatusObserver extends ServiceObserver {
         void displaySuccess(String message);
@@ -35,22 +31,19 @@ public class StatusService {
 
         GetFeedTask getFeedTask = new GetFeedTask(currUserAuthToken,
                 user, pageSize, lastStatus, new GetFeedHandler(observer));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(getFeedTask);
+        executeTask(getFeedTask);
     }
 
     public void loadMoreItemsForStory(AuthToken currUserAuthToken, User user, int pageSize, Status lastStatus,
                                       StoryObserver observer) {
         GetStoryTask getStoryTask = new GetStoryTask(currUserAuthToken,
                 user, pageSize, lastStatus, new GetStoryHandler(observer));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(getStoryTask);
+        executeTask(getStoryTask);
     }
 
     public void postStatus(AuthToken currUserAuthToken, Status newStatus, PostStatusObserver observer) {
         PostStatusTask statusTask = new PostStatusTask(currUserAuthToken,
                 newStatus, new PostStatusHandler(observer));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(statusTask);
+        executeTask(statusTask);
     }
 }

@@ -19,6 +19,6 @@ public class RegisterHandler extends BackgroundTaskHandler<UserService.RegisterO
 
     @Override
     protected void handleSuccessMessage(UserService.RegisterObserver observer, Bundle data) {
-        observer.registerToActivity(data);
+        observer.startActivity(data);
     }
 }

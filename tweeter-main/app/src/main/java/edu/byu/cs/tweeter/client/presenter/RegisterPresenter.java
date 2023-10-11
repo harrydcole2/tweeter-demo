@@ -87,7 +87,7 @@ public class RegisterPresenter {
         }
 
         @Override
-        public void registerToActivity(Bundle data) {
+        public void startActivity(Bundle data) {
             User registeredUser = (User) data.getSerializable(RegisterTask.USER_KEY);
             AuthToken authToken = (AuthToken) data.getSerializable(RegisterTask.AUTH_TOKEN_KEY);
 

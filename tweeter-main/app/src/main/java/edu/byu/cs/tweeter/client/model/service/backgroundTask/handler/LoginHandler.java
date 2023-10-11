@@ -22,6 +22,6 @@ public class LoginHandler extends BackgroundTaskHandler<UserService.LoginObserve
     @Override
     protected void handleSuccessMessage(UserService.LoginObserver observer, Bundle data) {
         UserService.LoginObserver loginObserver = (UserService.LoginObserver) observer;
-        observer.loginToActivity(data);
+        observer.startActivity(data);
     }
 }
