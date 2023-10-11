@@ -16,14 +16,10 @@ public class FollowingPresenter extends PagedPresenter<User>{
     public FollowingPresenter(View view) {
         this.view = view;
     }
-
-    public void loadMoreItems(User user) {
-        if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
-            isLoading = true;
-            view.setLoadingFooter(true);
-            followService.loadMoreItemsForFollowing(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE,
-                    lastItem, new FollowServiceObserver());
-        }
+    @Override
+    protected void callServiceToLoad(User user) {
+        followService.loadMoreItemsForFollowing(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE,
+                lastItem, new FollowServiceObserver());
     }
 
     public void getUserProfile(String userAlias) {
@@ -31,31 +27,7 @@ public class FollowingPresenter extends PagedPresenter<User>{
         //Toast.makeText(getContext(), "Getting user's profile...", Toast.LENGTH_LONG).show();
     }
 
-    private class FollowServiceObserver implements FollowService.FolloweesObserver {
-
-        @Override
-        public void handleError(String message) {
-            isLoading = false;
-            view.setLoadingFooter(false);
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            isLoading = false;
-            view.setLoadingFooter(false);
-            view.displayMessage("Failed to get following because of exception: " + ex.getMessage());
-        }
-
-        @Override
-        public void addMoreItems(List<User> items, boolean hasMorePages) {
-            isLoading = false;
-            view.setLoadingFooter(false);
-            FollowingPresenter.this.hasMorePages = hasMorePages;
-            lastItem = (items.size() > 0) ? items.get(items.size() - 1) : null;
-            view.addMoreItems(items);
-        }
-    }
+    private class FollowServiceObserver extends PagedServiceObserver implements FollowService.FolloweesObserver {}
 
     private class UserServiceObserver extends BaseServiceObserver implements UserService.UserObserver {
         @Override

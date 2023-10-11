@@ -4,7 +4,8 @@ import android.os.Bundle;
 
 import java.util.List;
 
-import edu.byu.cs.tweeter.model.domain.Status;
+import edu.byu.cs.tweeter.client.cache.Cache;
+import edu.byu.cs.tweeter.client.model.service.observer.PagedObserver;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public abstract class PagedPresenter<T> extends BasePresenter {
@@ -31,5 +32,30 @@ public abstract class PagedPresenter<T> extends BasePresenter {
 
     public boolean isLoading() {
         return isLoading;
+    }
+
+    public void loadMoreItems(User user) {
+        if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
+            isLoading = true;
+            view.setLoadingFooter(true);
+            callServiceToLoad(user);
+        }
+    }
+
+    protected abstract void callServiceToLoad(User user);
+    protected abstract class PagedServiceObserver extends BaseServiceObserver implements PagedObserver<T>{
+        @Override
+        public void addMoreItems(List items, boolean hasMorePages) {
+            isLoading = false;
+            view.setLoadingFooter(false);
+            PagedPresenter.this.hasMorePages = hasMorePages;
+            lastItem = (items.size() > 0) ? (T) items.get(items.size() - 1) : null;
+            view.addMoreItems(items);
+        }
+
+        @Override
+        protected String getTaskString() {
+            return "get following";
+        }
     }
 }

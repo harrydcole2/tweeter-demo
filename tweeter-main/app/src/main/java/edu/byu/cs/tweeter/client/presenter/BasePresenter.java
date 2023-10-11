@@ -35,9 +35,7 @@ public abstract class BasePresenter {
         public void handleException(Exception ex) {
             view.displayMessage("Failed to " + getTaskString() + " because of exception: " + ex.getMessage());
         }
-
         protected abstract String getTaskString();
     }
 
-    //protected abstract void errorPrefix(); //needed sometimes?
 }

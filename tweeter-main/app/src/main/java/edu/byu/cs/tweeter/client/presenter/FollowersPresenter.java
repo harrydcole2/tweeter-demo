@@ -15,44 +15,17 @@ public class FollowersPresenter extends PagedPresenter<User>{
     public FollowersPresenter(FollowersPresenter.View view) {
         this.view = view;
     }
-    public void loadMoreItems(User user) {
-        if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
-            isLoading = true;
-            view.setLoadingFooter(true);
-            followService.loadMoreItemsForFollowers(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE,
-                    lastItem, new FollowersServiceObserver());
-        }
+    @Override
+    protected void callServiceToLoad(User user) {
+        followService.loadMoreItemsForFollowers(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE,
+                lastItem, new FollowersServiceObserver());
     }
 
     public void getUserProfile(String userAlias) {
         userService.getUserProfile(Cache.getInstance().getCurrUserAuthToken(), userAlias, new UserServiceObserver());
     }
 
-    private class FollowersServiceObserver implements FollowService.FollowersObserver {
-
-        @Override
-        public void handleError(String message) {
-            isLoading = false;
-            view.setLoadingFooter(false);
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            isLoading = false;
-            view.setLoadingFooter(false);
-            view.displayMessage("Failed to get following because of exception: " + ex.getMessage());
-        }
-
-        @Override
-        public void addMoreItems(List<User> items, boolean hasMorePages) {
-            isLoading = false;
-            view.setLoadingFooter(false);
-            FollowersPresenter.this.hasMorePages = hasMorePages;
-            lastItem = (items.size() > 0) ? items.get(items.size() - 1) : null;
-            view.addMoreItems(items);
-        }
-    }
+    private class FollowersServiceObserver extends PagedServiceObserver implements FollowService.FollowersObserver {}
 
     private class UserServiceObserver extends BaseServiceObserver implements UserService.UserObserver {
         @Override
