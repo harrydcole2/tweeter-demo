@@ -14,7 +14,7 @@ import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class MainActivityPresenter {
+public class MainActivityPresenter extends BasePresenter{
     public User getCurrUser() {
         return Cache.getInstance().getCurrUser();
     }
@@ -23,9 +23,7 @@ public class MainActivityPresenter {
         Cache.getInstance().clearCache();
     }
 
-    public interface View {
-        void displayMessage(String message);
-
+    public interface View extends BaseView {
         void setupFollowButton(boolean isFollower);
         
         void enableFollowButton();
@@ -42,14 +40,8 @@ public class MainActivityPresenter {
     }
 
     private View view;
-    private FollowService followService;
-    private UserService userService;
 
-    private StatusService statusService;
     public MainActivityPresenter(MainActivityPresenter.View view) {
-        followService = new FollowService();
-        userService = new UserService();
-        statusService = new StatusService();
         this.view = view;
     }
 

@@ -72,7 +72,7 @@ public class LoginFragment extends Fragment implements LoginPresenter.View{
     }
 
     @Override
-    public void loginToActivity(String name, User loggedInUser) {
+    public void startNewActivity(String name, User loggedInUser) {
         loginToast = Toast.makeText(getContext(), "Logging In...", Toast.LENGTH_LONG); //moved from onCreateView... remove global var?
         loginToast.show();
 
@@ -85,7 +85,7 @@ public class LoginFragment extends Fragment implements LoginPresenter.View{
     }
 
     @Override
-    public void setErrowViewText(String text) {
+    public void setErrorViewText(String text) {
         errorView.setText(text);
     }
 }

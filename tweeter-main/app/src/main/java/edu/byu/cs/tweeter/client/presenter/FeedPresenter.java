@@ -11,20 +11,15 @@ import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class FeedPresenter {
+public class FeedPresenter extends PagedPresenter{
     private static final int PAGE_SIZE = 10;
     private Status lastStatus;
     private boolean hasMorePages;
     private boolean isLoading = false;
-    private StatusService statusService;
-
-    private UserService userService;
     private View view;
 
     public FeedPresenter(FeedPresenter.View view) {
         this.view = view;
-        statusService = new StatusService();
-        userService = new UserService();
     }
 
     public boolean hasMorePages() {
@@ -40,15 +35,8 @@ public class FeedPresenter {
                 userAlias, new UserServiceObserver());
     }
 
-    public interface View {
-        void setLoadingFooter(boolean value);
+    public interface View extends PagedView<Status> {}
 
-        void displayMessage(String message);
-
-        void addMoreStatuses(List<Status> statuses);
-
-        void startMainActivity(Bundle bundle);
-    }
     public void loadMoreItems(User user) {
         if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
             isLoading = true;
@@ -81,7 +69,7 @@ public class FeedPresenter {
             view.setLoadingFooter(false);
             FeedPresenter.this.hasMorePages = hasMorePages;
             lastStatus = (items.size() > 0) ? items.get(items.size() - 1) : null;
-            view.addMoreStatuses(items);
+            view.addMoreItems(items);
         }
     }
 

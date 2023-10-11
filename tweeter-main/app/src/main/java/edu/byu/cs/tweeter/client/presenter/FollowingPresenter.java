@@ -10,7 +10,7 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class FollowingPresenter {
+public class FollowingPresenter extends PagedPresenter{
 
     private static final int PAGE_SIZE = 10;
 
@@ -20,26 +20,12 @@ public class FollowingPresenter {
 
     private boolean isLoading = false;
 
-    public interface View {
-
-        void setLoadingFooter(boolean value);
-
-        void displayMessage(String message);
-
-        void addMoreFollowees(List<User> followees);
-
-        void startMainActivity(Bundle bundle);
-    }
+    public interface View extends PagedView<User>{}
 
     private View view;
 
-    private FollowService followService;
-    private UserService userService;
-
     public FollowingPresenter(View view) {
         this.view = view;
-        followService = new FollowService();
-        userService = new UserService();
     }
 
     public boolean hasMorePages() {
@@ -85,7 +71,7 @@ public class FollowingPresenter {
             view.setLoadingFooter(false);
             FollowingPresenter.this.hasMorePages = hasMorePages;
             lastFollowee = (items.size() > 0) ? items.get(items.size() - 1) : null;
-            view.addMoreFollowees(items);
+            view.addMoreItems(items);
         }
     }
 

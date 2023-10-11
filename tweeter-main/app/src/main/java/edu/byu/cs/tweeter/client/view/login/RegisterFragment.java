@@ -112,7 +112,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
     }
 
     @Override
-    public void registerToActivity(String name, User registeredUser) {
+    public void startNewActivity(String name, User registeredUser) {
         registeringToast = Toast.makeText(getContext(), "Registering...", Toast.LENGTH_LONG); //moved from onCreateView
         registeringToast.show();
 
@@ -129,7 +129,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
     }
 
     @Override
-    public void setErrowViewText(String text) {
+    public void setErrorViewText(String text) {
         errorView.setText(text);
     }
 

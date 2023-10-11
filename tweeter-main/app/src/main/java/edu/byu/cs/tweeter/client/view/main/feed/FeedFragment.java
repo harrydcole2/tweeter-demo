@@ -111,7 +111,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
     }
 
     @Override
-    public void addMoreStatuses(List<Status> statuses) {
+    public void addMoreItems(List<Status> statuses) {
         feedRecyclerViewAdapter.addItems(statuses);
     }
 

@@ -2,7 +2,6 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Message;
 
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.UserService;
@@ -10,39 +9,27 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.RegisterTask;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class RegisterPresenter {
+public class RegisterPresenter extends AuthenticationPresenter {
 
-    public interface View {
-        void displayMessage(String message);
-
-        void registerToActivity(String name, User registeredUser);
-
-        void setErrowViewText(String text);
-
+    private View view;
+    public interface View extends AuthView {
         String convertImageToBytesBase64(Drawable imageToUpload);
     }
-    private UserService userService;
-    private View view;
 
     public RegisterPresenter(RegisterPresenter.View view) {
-        this.userService = new UserService();
         this.view = view;
     }
     public void registerProcedure(String firstName, String lastName, String alias, String password, Drawable imageToUpload) {
         try {
             validateRegistration(firstName, lastName, alias, password, imageToUpload);
-            view.setErrowViewText(null);
-            //errorView.setText(null);
+            view.setErrorViewText(null);
 
             String imageBytesBase64 = view.convertImageToBytesBase64(imageToUpload);
-
             // Send register request.
             register(firstName, lastName, alias, password, imageBytesBase64);
 
-
         } catch (Exception e) {
-            view.setErrowViewText(e.getMessage());
-            //errorView.setText(e.getMessage());
+            view.setErrorViewText(e.getMessage());
         }
     }
 
@@ -94,7 +81,7 @@ public class RegisterPresenter {
             Cache.getInstance().setCurrUser(registeredUser);
             Cache.getInstance().setCurrUserAuthToken(authToken);
 
-            view.registerToActivity(Cache.getInstance().getCurrUser().getName(), registeredUser);
+            view.startNewActivity(Cache.getInstance().getCurrUser().getName(), registeredUser);
         }
     }
 }

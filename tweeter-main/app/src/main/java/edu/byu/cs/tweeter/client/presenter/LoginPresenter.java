@@ -1,7 +1,6 @@
 package edu.byu.cs.tweeter.client.presenter;
 
 import android.os.Bundle;
-import android.os.Message;
 
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.UserService;
@@ -9,35 +8,21 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.LoginTask;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class LoginPresenter {
+public class LoginPresenter extends AuthenticationPresenter {
 
-    public interface View {
-        void displayMessage(String message);
-
-        void loginToActivity(String name, User loggedInUser);
-
-        void setErrowViewText(String text);
-
-    }
-
-    private UserService userService;
     private View view;
-
+    public interface View extends AuthView {}
     public LoginPresenter(LoginPresenter.View view) {
-        this.userService = new UserService();
         this.view = view;
     }
 
     public void loginProcedure(String alias, String password) {
-        try { //TODO determine if this needs a gravestone
+        try {
             validateLogin(alias, password);
-            view.setErrowViewText(null);
-            //errorView.setText(null);
-            // Send the login request.
+            view.setErrorViewText(null);
             login(alias, password);
         } catch (Exception e) {
-            view.setErrowViewText(e.getMessage());
-            //errorView.setText(e.getMessage());
+            view.setErrorViewText(e.getMessage());
         }
     }
 
@@ -77,7 +62,7 @@ public class LoginPresenter {
             Cache.getInstance().setCurrUser(loggedInUser);
             Cache.getInstance().setCurrUserAuthToken(authToken);
 
-            view.loginToActivity(Cache.getInstance().getCurrUser().getName(), loggedInUser);
+            view.startNewActivity(Cache.getInstance().getCurrUser().getName(), loggedInUser);
         }
     }
 }
