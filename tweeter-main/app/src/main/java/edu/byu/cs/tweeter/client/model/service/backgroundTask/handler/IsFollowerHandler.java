@@ -12,15 +12,14 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.IsFollowerTask;
 import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 
 // IsFollowerHandler
-public class IsFollowerHandler extends BackgroundTaskHandler {
+public class IsFollowerHandler extends BackgroundTaskHandler<FollowService.IsFollowerObserver> {
     public IsFollowerHandler(FollowService.IsFollowerObserver observer) {
         super(observer);
     }
-    @Override
-    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
-        FollowService.IsFollowerObserver followerObserver = (FollowService.IsFollowerObserver) observer;
 
+    @Override
+    protected void handleSuccessMessage(FollowService.IsFollowerObserver observer, Bundle data) {
         boolean isFollower = data.getBoolean(IsFollowerTask.IS_FOLLOWER_KEY);
-        followerObserver.setupFollowButton(isFollower);
+        observer.setupFollowButton(isFollower);
     }
 }

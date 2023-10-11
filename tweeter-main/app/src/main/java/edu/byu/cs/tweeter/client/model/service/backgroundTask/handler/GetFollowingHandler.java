@@ -17,17 +17,8 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Message handler (i.e., observer) for GetFollowingTask.
  */
-public class GetFollowingHandler extends BackgroundTaskHandler {
+public class GetFollowingHandler extends PagedHandler {
     public GetFollowingHandler(FollowService.FolloweesObserver observer) {
         super(observer);
-    }
-
-    @Override
-    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
-        FollowService.FolloweesObserver followeesObserver = (FollowService.FolloweesObserver) observer;
-
-        List<User> followees = (List<User>) data.getSerializable(GetFollowingTask.ITEMS_KEY);
-        boolean hasMorePages = data.getBoolean(GetFollowingTask.MORE_PAGES_KEY);
-        followeesObserver.addMoreFollowees(followees, hasMorePages);
     }
 }

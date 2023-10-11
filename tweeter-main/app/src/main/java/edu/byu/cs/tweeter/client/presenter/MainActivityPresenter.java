@@ -153,12 +153,12 @@ public class MainActivityPresenter {
     private class IsFollowerObserver implements FollowService.IsFollowerObserver {
 
         @Override
-        public void displayError(String message) {
+        public void handleError(String message) {
             view.displayMessage(message);
         }
 
         @Override
-        public void displayException(Exception ex) {
+        public void handleException(Exception ex) {
             view.displayMessage("Failed to determine following relationship because of exception: " + ex.getMessage());
         }
         @Override
@@ -171,13 +171,13 @@ public class MainActivityPresenter {
     private class FollowObserver implements FollowService.FollowObserver {
 
         @Override
-        public void displayError(String message) {
+        public void handleError(String message) {
             view.displayMessage(message);
             view.enableFollowButton();
         }
 
         @Override
-        public void displayException(Exception ex) {
+        public void handleException(Exception ex) {
             view.displayMessage("Failed to follow because of exception: " + ex.getMessage());
             view.enableFollowButton();
         }
@@ -192,13 +192,13 @@ public class MainActivityPresenter {
     private class UnfollowObserver implements FollowService.UnfollowObserver {
 
         @Override
-        public void displayError(String message) {
+        public void handleError(String message) {
             view.displayMessage(message);
             view.enableFollowButton();
         }
 
         @Override
-        public void displayException(Exception ex) {
+        public void handleException(Exception ex) {
             view.displayMessage("Failed to unfollow because of exception: " + ex.getMessage());
             view.enableFollowButton();
         }
@@ -215,12 +215,12 @@ public class MainActivityPresenter {
     private class LogoutServiceObserver implements UserService.LogoutObserver {
 
         @Override
-        public void displayError(String message) {
+        public void handleError(String message) {
             view.displayMessage(message);
         }
 
         @Override
-        public void displayException(Exception ex) {
+        public void handleException(Exception ex) {
             view.displayMessage("Failed to logout because of exception: " + ex.getMessage());
         }
 
@@ -233,12 +233,12 @@ public class MainActivityPresenter {
     private class PostStatusServiceObserver implements StatusService.PostStatusObserver {
 
         @Override
-        public void displayError(String message) {
+        public void handleError(String message) {
             view.displayMessage(message);
         }
 
         @Override
-        public void displayException(Exception ex) {
+        public void handleException(Exception ex) {
             view.displayMessage("Failed to post status because of exception: " + ex.getMessage());
 
         }
@@ -252,12 +252,12 @@ public class MainActivityPresenter {
     private class GetFollowersCountObserver implements FollowService.GetFollowersCountObserver {
 
         @Override
-        public void displayError(String message) {
+        public void handleError(String message) {
             view.displayMessage(message);
         }
 
         @Override
-        public void displayException(Exception ex) {
+        public void handleException(Exception ex) {
             view.displayMessage("Failed to get followers count because of exception: " + ex.getMessage());
         }
 
@@ -270,12 +270,12 @@ public class MainActivityPresenter {
     private class GetFollowingCountObserver implements FollowService.GetFollowingCountObserver {
 
         @Override
-        public void displayError(String message) {
+        public void handleError(String message) {
             view.displayMessage(message);
         }
 
         @Override
-        public void displayException(Exception ex) {
+        public void handleException(Exception ex) {
             view.displayMessage("Failed to get following count because of exception: " + ex.getMessage());
         }
 

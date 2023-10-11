@@ -11,17 +11,14 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowersCountTask;
 import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 
-public class GetFollowersCountHandler extends BackgroundTaskHandler {
+public class GetFollowersCountHandler extends BackgroundTaskHandler<FollowService.GetFollowersCountObserver> {
     public GetFollowersCountHandler(FollowService.GetFollowersCountObserver observer) {
         super(observer);
     }
 
     @Override
-    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
-        FollowService.GetFollowersCountObserver followersCountObserver =
-                (FollowService.GetFollowersCountObserver) observer;
-
+    protected void handleSuccessMessage(FollowService.GetFollowersCountObserver observer, Bundle data) {
         int count = data.getInt(GetFollowersCountTask.COUNT_KEY);
-        followersCountObserver.displayFollowersCount(count);
+        observer.displayFollowersCount(count);
     }
 }

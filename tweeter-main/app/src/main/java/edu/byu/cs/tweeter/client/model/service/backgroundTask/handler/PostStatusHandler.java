@@ -11,14 +11,14 @@ import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.PostStatusTask;
 import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 
-public class PostStatusHandler extends BackgroundTaskHandler {
+public class PostStatusHandler extends BackgroundTaskHandler<StatusService.PostStatusObserver> {
     public PostStatusHandler(StatusService.PostStatusObserver observer) {
         super(observer);
     }
-    @Override
-    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
-        StatusService.PostStatusObserver postStatusObserver = (StatusService.PostStatusObserver) observer;
 
-        postStatusObserver.displaySuccess("Successfully Posted!");
+    @Override
+    protected void handleSuccessMessage(StatusService.PostStatusObserver observer, Bundle data) {
+        observer.displaySuccess("Successfully Posted!");
+
     }
 }

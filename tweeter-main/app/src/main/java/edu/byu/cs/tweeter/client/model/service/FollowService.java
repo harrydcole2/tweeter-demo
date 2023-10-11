@@ -20,18 +20,19 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowi
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowingHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.IsFollowerHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.UnfollowHandler;
+import edu.byu.cs.tweeter.client.model.service.observer.PagedObserver;
 import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class FollowService {
 
-    public interface FolloweesObserver extends ServiceObserver {
-        void addMoreFollowees(List<User> followees, boolean hasMorePages);
+    public interface FolloweesObserver extends PagedObserver<User> {
+        //void addMoreFollowees(List<User> followees, boolean hasMorePages);
     }
 
-    public interface FollowersObserver extends ServiceObserver {
-        void addMoreFollowers(List<User> followees, boolean hasMorePages);
+    public interface FollowersObserver extends PagedObserver<User> {
+        //void addMoreFollowers(List<User> followees, boolean hasMorePages);
     }
 
     public interface IsFollowerObserver extends ServiceObserver {

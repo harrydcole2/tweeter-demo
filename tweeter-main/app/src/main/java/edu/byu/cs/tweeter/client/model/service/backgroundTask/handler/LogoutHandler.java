@@ -11,16 +11,14 @@ import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.LogoutTask;
 import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 
-public class LogoutHandler extends BackgroundTaskHandler {
+public class LogoutHandler extends BackgroundTaskHandler<UserService.LogoutObserver> {
 
     public LogoutHandler(UserService.LogoutObserver observer) {
         super(observer);
     }
 
     @Override
-    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
-        UserService.LogoutObserver logoutObserver = (UserService.LogoutObserver) observer;
-
-        logoutObserver.logout();
+    protected void handleSuccessMessage(UserService.LogoutObserver observer, Bundle data) {
+        observer.logout();
     }
 }

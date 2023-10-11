@@ -14,16 +14,14 @@ import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 /**
  * Message handler (i.e., observer) for GetUserTask.
  */
-public class GetUserHandler extends BackgroundTaskHandler {
+public class GetUserHandler extends BackgroundTaskHandler<UserService.UserObserver> {
 
     public GetUserHandler(UserService.UserObserver observer) {
         super(observer);
     }
 
     @Override
-    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
-        UserService.UserObserver userObserver = (UserService.UserObserver) observer;
-
-        userObserver.startActivity(data);
+    protected void handleSuccessMessage(UserService.UserObserver observer, Bundle data) {
+        observer.startActivity(data);
     }
 }

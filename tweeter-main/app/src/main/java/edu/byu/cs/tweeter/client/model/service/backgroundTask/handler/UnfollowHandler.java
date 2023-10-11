@@ -11,14 +11,13 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.UnfollowTask;
 import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 
-public class UnfollowHandler extends BackgroundTaskHandler {
+public class UnfollowHandler extends BackgroundTaskHandler<FollowService.UnfollowObserver> {
     public UnfollowHandler(FollowService.UnfollowObserver observer) {
         super(observer);
     }
-    @Override
-    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
-        FollowService.UnfollowObserver unfollowObserver = (FollowService.UnfollowObserver) observer;
 
-        unfollowObserver.updateSelectedUserFollowingAndFollowers();
+    @Override
+    protected void handleSuccessMessage(FollowService.UnfollowObserver observer, Bundle data) {
+        observer.updateSelectedUserFollowingAndFollowers();
     }
 }

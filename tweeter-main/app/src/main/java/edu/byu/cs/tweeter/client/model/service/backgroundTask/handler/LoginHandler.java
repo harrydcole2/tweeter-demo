@@ -14,15 +14,14 @@ import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 /**
  * Message handler (i.e., observer) for LoginTask
  */
-public class LoginHandler extends BackgroundTaskHandler {
+public class LoginHandler extends BackgroundTaskHandler<UserService.LoginObserver> {
     public LoginHandler(UserService.LoginObserver observer) {
         super(observer);
     }
 
     @Override
-    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
+    protected void handleSuccessMessage(UserService.LoginObserver observer, Bundle data) {
         UserService.LoginObserver loginObserver = (UserService.LoginObserver) observer;
-
-        loginObserver.loginToActivity(data);
+        observer.loginToActivity(data);
     }
 }

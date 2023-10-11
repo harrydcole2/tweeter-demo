@@ -17,18 +17,9 @@ import edu.byu.cs.tweeter.model.domain.Status;
 /**
  * Message handler (i.e., observer) for GetStoryTask.
  */
-public class GetStoryHandler extends BackgroundTaskHandler {
+public class GetStoryHandler extends PagedHandler {
 
     public GetStoryHandler(StatusService.StoryObserver observer) {
         super(observer);
-    }
-
-    @Override
-    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
-        StatusService.StoryObserver storyObserver = (StatusService.StoryObserver) observer;
-
-        List<Status> statuses = (List<Status>) data.getSerializable(GetStoryTask.ITEMS_KEY);
-        boolean hasMorePages = data.getBoolean(GetStoryTask.MORE_PAGES_KEY);
-        storyObserver.addMoreStatusesToStory(statuses, hasMorePages);
     }
 }

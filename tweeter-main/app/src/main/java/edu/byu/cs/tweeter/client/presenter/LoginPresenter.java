@@ -59,12 +59,12 @@ public class LoginPresenter {
 
     private class LoginServiceObserver implements UserService.LoginObserver {
         @Override
-        public void displayError(String message) {
+        public void handleError(String message) {
             view.displayMessage(message);
         }
 
         @Override
-        public void displayException(Exception ex) {
+        public void handleException(Exception ex) {
             view.displayMessage("Failed to get user's profile because of exception: " + ex.getMessage());
         }
 

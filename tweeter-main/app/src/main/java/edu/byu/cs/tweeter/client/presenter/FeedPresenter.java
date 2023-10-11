@@ -62,38 +62,38 @@ public class FeedPresenter {
     private class FeedServiceObserver implements StatusService.FeedObserver {
 
         @Override
-        public void displayError(String message) {
+        public void handleError(String message) {
             isLoading = false;
             view.setLoadingFooter(false);
             view.displayMessage(message);
         }
 
         @Override
-        public void displayException(Exception ex) {
+        public void handleException(Exception ex) {
             isLoading = false;
             view.setLoadingFooter(false);
             view.displayMessage("Failed to get following because of exception: " + ex.getMessage());
         }
 
         @Override
-        public void addMoreStatusesToFeed(List<Status> statuses, boolean hasMorePages) {
+        public void addMoreItems(List<Status> items, boolean hasMorePages) {
             isLoading = false;
             view.setLoadingFooter(false);
             FeedPresenter.this.hasMorePages = hasMorePages;
-            lastStatus = (statuses.size() > 0) ? statuses.get(statuses.size() - 1) : null;
-            view.addMoreStatuses(statuses);
+            lastStatus = (items.size() > 0) ? items.get(items.size() - 1) : null;
+            view.addMoreStatuses(items);
         }
     }
 
     private class UserServiceObserver implements UserService.UserObserver {
 
         @Override
-        public void displayError(String message) {
+        public void handleError(String message) {
             view.displayMessage(message);
         }
 
         @Override
-        public void displayException(Exception ex) {
+        public void handleException(Exception ex) {
             view.displayMessage("Failed to get user's profile because of exception: " + ex.getMessage());
         }
 

@@ -10,6 +10,7 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.PostStatusTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFeedHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetStoryHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.PostStatusHandler;
+import edu.byu.cs.tweeter.client.model.service.observer.PagedObserver;
 import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
@@ -17,12 +18,12 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class StatusService {
 
-    public interface FeedObserver extends ServiceObserver {
-        void addMoreStatusesToFeed(List<Status> statuses, boolean hasMorePages);
+    public interface FeedObserver extends PagedObserver<Status> {
+        //void addMoreStatusesToFeed(List<Status> statuses, boolean hasMorePages);
     }
 
-    public interface StoryObserver extends ServiceObserver {
-        void addMoreStatusesToStory(List<Status> statuses, boolean hasMorePages);
+    public interface StoryObserver extends PagedObserver<Status> {
+        //void addMoreStatusesToStory(List<Status> statuses, boolean hasMorePages);
     }
 
     public interface PostStatusObserver extends ServiceObserver {

@@ -66,38 +66,38 @@ public class FollowingPresenter {
     private class FollowServiceObserver implements FollowService.FolloweesObserver {
 
         @Override
-        public void displayError(String message) {
+        public void handleError(String message) {
             isLoading = false;
             view.setLoadingFooter(false);
             view.displayMessage(message);
         }
 
         @Override
-        public void displayException(Exception ex) {
+        public void handleException(Exception ex) {
             isLoading = false;
             view.setLoadingFooter(false);
             view.displayMessage("Failed to get following because of exception: " + ex.getMessage());
         }
 
         @Override
-        public void addMoreFollowees(List<User> followees, boolean hasMorePages) {
+        public void addMoreItems(List<User> items, boolean hasMorePages) {
             isLoading = false;
             view.setLoadingFooter(false);
             FollowingPresenter.this.hasMorePages = hasMorePages;
-            lastFollowee = (followees.size() > 0) ? followees.get(followees.size() - 1) : null;
-            view.addMoreFollowees(followees);
+            lastFollowee = (items.size() > 0) ? items.get(items.size() - 1) : null;
+            view.addMoreFollowees(items);
         }
     }
 
     private class UserServiceObserver implements UserService.UserObserver {
 
         @Override
-        public void displayError(String message) {
+        public void handleError(String message) {
             view.displayMessage(message);
         }
 
         @Override
-        public void displayException(Exception ex) {
+        public void handleException(Exception ex) {
             view.displayMessage("Failed to get user's profile because of exception: " + ex.getMessage());
         }
 

@@ -12,16 +12,13 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.RegisterTask;
 import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 
 // RegisterHandler
-public class RegisterHandler extends BackgroundTaskHandler {
+public class RegisterHandler extends BackgroundTaskHandler<UserService.RegisterObserver> {
     public RegisterHandler(UserService.RegisterObserver observer) {
         super(observer);
     }
 
     @Override
-    protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
-        UserService.RegisterObserver registerObserver = (UserService.RegisterObserver) observer;
-
-        registerObserver.registerToActivity(data);
-
+    protected void handleSuccessMessage(UserService.RegisterObserver observer, Bundle data) {
+        observer.registerToActivity(data);
     }
 }
