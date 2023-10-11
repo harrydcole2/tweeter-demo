@@ -10,36 +10,18 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class FollowersPresenter extends PagedPresenter{
-
-    private static final int PAGE_SIZE = 10;
-
-    private User lastFollower;
-
-    private boolean hasMorePages;
-
-    private boolean isLoading = false;
-
+public class FollowersPresenter extends PagedPresenter<User>{
     public interface View extends PagedView<User> {}
-
     private View view;
     public FollowersPresenter(FollowersPresenter.View view) {
         this.view = view;
-    }
-
-    public boolean hasMorePages() {
-        return hasMorePages;
-    }
-
-    public boolean isLoading() {
-        return isLoading;
     }
     public void loadMoreItems(User user) {
         if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
             isLoading = true;
             view.setLoadingFooter(true);
             followService.loadMoreItemsForFollowers(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE,
-                    lastFollower, new FollowersServiceObserver());
+                    lastItem, new FollowersServiceObserver());
         }
     }
 
@@ -68,7 +50,7 @@ public class FollowersPresenter extends PagedPresenter{
             isLoading = false;
             view.setLoadingFooter(false);
             FollowersPresenter.this.hasMorePages = hasMorePages;
-            lastFollower = (items.size() > 0) ? items.get(items.size() - 1) : null;
+            lastItem = (items.size() > 0) ? items.get(items.size() - 1) : null;
             view.addMoreItems(items);
         }
     }

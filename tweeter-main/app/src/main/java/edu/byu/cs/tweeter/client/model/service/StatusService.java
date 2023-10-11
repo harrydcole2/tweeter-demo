@@ -28,7 +28,6 @@ public class StatusService extends BaseService {
 
     public void loadMoreItemsForFeed(AuthToken currUserAuthToken, User user, int pageSize, Status lastStatus,
                                      FeedObserver observer) {
-
         GetFeedTask getFeedTask = new GetFeedTask(currUserAuthToken,
                 user, pageSize, lastStatus, new GetFeedHandler(observer));
         executeTask(getFeedTask);

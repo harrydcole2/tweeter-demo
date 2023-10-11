@@ -10,16 +10,7 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class FollowingPresenter extends PagedPresenter{
-
-    private static final int PAGE_SIZE = 10;
-
-    private User lastFollowee;
-
-    private boolean hasMorePages;
-
-    private boolean isLoading = false;
-
+public class FollowingPresenter extends PagedPresenter<User>{
     public interface View extends PagedView<User>{}
 
     private View view;
@@ -28,19 +19,12 @@ public class FollowingPresenter extends PagedPresenter{
         this.view = view;
     }
 
-    public boolean hasMorePages() {
-        return hasMorePages;
-    }
-
-    public boolean isLoading() {
-        return isLoading;
-    }
-
     public void loadMoreItems(User user) {
         if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
             isLoading = true;
             view.setLoadingFooter(true);
-            followService.loadMoreItemsForFollowing(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastFollowee, new FollowServiceObserver());
+            followService.loadMoreItemsForFollowing(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE,
+                    lastItem, new FollowServiceObserver());
         }
     }
 
@@ -70,7 +54,7 @@ public class FollowingPresenter extends PagedPresenter{
             isLoading = false;
             view.setLoadingFooter(false);
             FollowingPresenter.this.hasMorePages = hasMorePages;
-            lastFollowee = (items.size() > 0) ? items.get(items.size() - 1) : null;
+            lastItem = (items.size() > 0) ? items.get(items.size() - 1) : null;
             view.addMoreItems(items);
         }
     }
