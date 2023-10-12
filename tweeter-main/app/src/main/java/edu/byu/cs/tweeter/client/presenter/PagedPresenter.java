@@ -5,6 +5,8 @@ import android.os.Bundle;
 import java.util.List;
 
 import edu.byu.cs.tweeter.client.cache.Cache;
+import edu.byu.cs.tweeter.client.model.service.UserService;
+import edu.byu.cs.tweeter.client.model.service.observer.ActivityObserver;
 import edu.byu.cs.tweeter.client.model.service.observer.PagedObserver;
 import edu.byu.cs.tweeter.model.domain.User;
 
@@ -12,7 +14,6 @@ public abstract class PagedPresenter<T> extends BasePresenter {
 
     protected static final int PAGE_SIZE = 10;
     protected T lastItem;
-
     protected boolean hasMorePages;
     protected boolean isLoading = false;
 
@@ -42,8 +43,13 @@ public abstract class PagedPresenter<T> extends BasePresenter {
         }
     }
 
+    public void getUserProfile(String userAlias) {
+        userService.getUserProfile(Cache.getInstance().getCurrUserAuthToken(), userAlias, new UserServiceObserver());
+    }
+
+
     protected abstract void callServiceToLoad(User user);
-    protected abstract class PagedServiceObserver extends BaseServiceObserver implements PagedObserver<T>{
+    protected class PagedServiceObserver extends BaseServiceObserver implements PagedObserver<T>{
         @Override
         public void addMoreItems(List items, boolean hasMorePages) {
             isLoading = false;
@@ -55,7 +61,18 @@ public abstract class PagedPresenter<T> extends BasePresenter {
 
         @Override
         protected String getTaskString() {
-            return "get following";
+            return "get items";
+        }
+    }
+
+    protected class UserServiceObserver extends BaseServiceObserver implements ActivityObserver {
+        @Override
+        public void startActivity(Bundle bundle) {
+            view.startMainActivity(bundle);
+        }
+        @Override
+        protected String getTaskString() {
+            return "get user's profile";
         }
     }
 }

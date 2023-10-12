@@ -17,24 +17,19 @@ import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class StatusService extends BaseService {
-
-    public interface FeedObserver extends PagedObserver<Status> {}
-
-    public interface StoryObserver extends PagedObserver<Status> {}
-
     public interface PostStatusObserver extends ServiceObserver {
         void displaySuccess(String message);
     }
 
     public void loadMoreItemsForFeed(AuthToken currUserAuthToken, User user, int pageSize, Status lastStatus,
-                                     FeedObserver observer) {
+                                     PagedObserver<Status> observer) {
         GetFeedTask getFeedTask = new GetFeedTask(currUserAuthToken,
                 user, pageSize, lastStatus, new GetFeedHandler(observer));
         executeTask(getFeedTask);
     }
 
     public void loadMoreItemsForStory(AuthToken currUserAuthToken, User user, int pageSize, Status lastStatus,
-                                      StoryObserver observer) {
+                                      PagedObserver<Status> observer) {
         GetStoryTask getStoryTask = new GetStoryTask(currUserAuthToken,
                 user, pageSize, lastStatus, new GetStoryHandler(observer));
         executeTask(getStoryTask);

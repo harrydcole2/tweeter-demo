@@ -20,8 +20,6 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 
 public class UserService extends BaseService {
 
-    public interface UserObserver extends ActivityObserver {}
-
     public interface LoginObserver extends ActivityObserver {}
 
     public interface RegisterObserver extends ActivityObserver {}
@@ -30,7 +28,7 @@ public class UserService extends BaseService {
         void logout();
     }
 
-    public void getUserProfile(AuthToken currUserAuthToken, String userAlias, UserObserver observer) {
+    public void getUserProfile(AuthToken currUserAuthToken, String userAlias, ActivityObserver observer) {
         GetUserTask getUserTask = new GetUserTask(currUserAuthToken,
                 userAlias, new GetUserHandler(observer));
         executeTask(getUserTask);

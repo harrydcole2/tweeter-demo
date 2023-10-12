@@ -21,11 +21,6 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class FollowService extends BaseService {
-
-    public interface FolloweesObserver extends PagedObserver<User> {}
-
-    public interface FollowersObserver extends PagedObserver<User> {}
-
     public interface IsFollowerObserver extends ServiceObserver {
         void setupFollowButton(boolean isFollower);
     }
@@ -45,13 +40,13 @@ public class FollowService extends BaseService {
     public interface GetFollowingCountObserver extends ServiceObserver {
         void displayFollowingCount(int count);
     }
-    public void loadMoreItemsForFollowing(AuthToken currUserAuthToken, User user, int pageSize, User lastFollowee, FolloweesObserver observer) {
+    public void loadMoreItemsForFollowing(AuthToken currUserAuthToken, User user, int pageSize, User lastFollowee, PagedObserver<User> observer) {
         GetFollowingTask getFollowingTask = new GetFollowingTask(currUserAuthToken,
                 user, pageSize, lastFollowee, new GetFollowingHandler(observer));
         executeTask(getFollowingTask);
     }
 
-    public void loadMoreItemsForFollowers(AuthToken currUserAuthToken, User user, int pageSize, User lastFollower, FollowersObserver observer) {
+    public void loadMoreItemsForFollowers(AuthToken currUserAuthToken, User user, int pageSize, User lastFollower, PagedObserver<User> observer) {
         GetFollowersTask getFollowersTask = new GetFollowersTask(currUserAuthToken,
                 user, pageSize, lastFollower, new GetFollowersHandler(observer));
         executeTask(getFollowersTask);
