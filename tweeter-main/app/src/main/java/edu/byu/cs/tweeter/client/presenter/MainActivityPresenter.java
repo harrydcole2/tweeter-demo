@@ -57,6 +57,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivityPresenter.V
             view.displayMessage("Adding " + selectedUser.getName());
             followService.follow(selectedUser, Cache.getInstance().getCurrUserAuthToken(), new ChangeFollowObserver());
         }
+        view.enableFollowButton();
     }
 
     public void logout() {
@@ -64,7 +65,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivityPresenter.V
     }
 
     public void postStatus(String post) {
-        Status newStatus = new Status(post, Cache.getInstance().getCurrUser(), System.currentTimeMillis(), parseURLs(post), parseMentions(post)); //TODO sink task
+        Status newStatus = new Status(post, Cache.getInstance().getCurrUser(), System.currentTimeMillis(), parseURLs(post), parseMentions(post));
         statusService.postStatus(Cache.getInstance().getCurrUserAuthToken(), newStatus, new PostStatusServiceObserver());
     }
 
@@ -137,65 +138,38 @@ public class MainActivityPresenter extends BasePresenter<MainActivityPresenter.V
                 new GetFollowingCountObserver());
     }
 
-
-    private class IsFollowerObserver implements FollowService.IsFollowerObserver {
-
-        @Override
-        public void handleError(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayMessage("Failed to determine following relationship because of exception: " + ex.getMessage());
-        }
-        @Override
-        public void setupFollowButton(boolean isFollower) {
-            // If logged in user if a follower of the selected user, display the follow button as "following"
-            view.setupFollowButton(isFollower);
-        }
-    }
-
-    private class ChangeFollowObserver implements FollowService.ChangeFollowObserver {
-
-        @Override
-        public void handleError(String message) {
-            view.displayMessage(message);
-            view.enableFollowButton();
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayMessage("Failed to follow because of exception: " + ex.getMessage());
-            view.enableFollowButton();
-        }
+    private class ChangeFollowObserver extends BaseServiceObserver implements FollowService.ChangeFollowObserver {
         @Override
         public void updateSelectedUserFollowingAndFollowers() {
             view.updateSelectedUserFollowingAndFollowers();
             view.updateFollowButton(false);
-            view.enableFollowButton();
+        }
+        @Override
+        protected String getTaskString() {
+            return "follow";
         }
     }
 
-    private class UnfollowObserver implements FollowService.UnfollowObserver {
-
-        @Override
-        public void handleError(String message) {
-            view.displayMessage(message);
-            view.enableFollowButton();
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayMessage("Failed to unfollow because of exception: " + ex.getMessage());
-            view.enableFollowButton();
-        }
-
+    private class UnfollowObserver extends BaseServiceObserver implements FollowService.UnfollowObserver {
         @Override
         public void updateSelectedUserFollowingAndFollowers() {
             view.updateSelectedUserFollowingAndFollowers();
             view.updateFollowButton(true);
-            view.enableFollowButton();
+        }
+        @Override
+        protected String getTaskString() {
+            return "unfollow";
+        }
+    }
+
+    private class IsFollowerObserver extends BaseServiceObserver implements FollowService.IsFollowerObserver {
+        @Override
+        public void setupFollowButton(boolean isFollower) {
+            view.setupFollowButton(isFollower);
+        }
+        @Override
+        protected String getTaskString() {
+            return "determine following relationship";
         }
     }
 
@@ -204,7 +178,6 @@ public class MainActivityPresenter extends BasePresenter<MainActivityPresenter.V
         public void logout() {
             view.logoutUser();
         }
-
         @Override
         protected String getTaskString() {
             return "logout";
@@ -216,7 +189,6 @@ public class MainActivityPresenter extends BasePresenter<MainActivityPresenter.V
         public void displaySuccess(String message) {
             view.displayMessage(message);
         }
-
         @Override
         protected String getTaskString() {
             return "post status";
@@ -228,7 +200,6 @@ public class MainActivityPresenter extends BasePresenter<MainActivityPresenter.V
         public void displayFollowersCount(int count) {
             view.setFollowerCount(count);
         }
-
         @Override
         protected String getTaskString() {
             return "get followers count";
@@ -240,7 +211,6 @@ public class MainActivityPresenter extends BasePresenter<MainActivityPresenter.V
         public void displayFollowingCount(int count) {
             view.setFollowingCount(count);
         }
-
         @Override
         protected String getTaskString() {
             return "get following count";

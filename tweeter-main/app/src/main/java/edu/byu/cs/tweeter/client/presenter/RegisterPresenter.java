@@ -11,7 +11,9 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class RegisterPresenter extends AuthenticationPresenter {
 
-    public interface View extends AuthView {}
+    public interface View extends AuthView {
+        String convertImageToBytesBase64(Drawable imageToUpload);
+    }
 
     public RegisterPresenter(RegisterPresenter.View view) {
         super(view);

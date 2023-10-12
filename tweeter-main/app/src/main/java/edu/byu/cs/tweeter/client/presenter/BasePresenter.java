@@ -30,7 +30,6 @@ public abstract class BasePresenter<T extends BasePresenter.BaseView> {
         public void handleError(String message) {
             view.displayMessage(message);
         }
-
         @Override
         public void handleException(Exception ex) {
             view.displayMessage("Failed to " + getTaskString() + " because of exception: " + ex.getMessage());
