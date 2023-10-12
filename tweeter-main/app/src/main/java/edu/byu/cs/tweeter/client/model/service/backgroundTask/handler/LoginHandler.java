@@ -1,27 +1,20 @@
 package edu.byu.cs.tweeter.client.model.service.backgroundTask.handler;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-
-import androidx.annotation.NonNull;
 
 import edu.byu.cs.tweeter.client.model.service.UserService;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.LoginTask;
-import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
+import edu.byu.cs.tweeter.client.model.service.observer.ActivityObserver;
 
 /**
  * Message handler (i.e., observer) for LoginTask
  */
-public class LoginHandler extends BackgroundTaskHandler<UserService.LoginObserver> {
-    public LoginHandler(UserService.LoginObserver observer) {
+public class LoginHandler extends BackgroundTaskHandler<ActivityObserver> {
+    public LoginHandler(ActivityObserver observer) {
         super(observer);
     }
 
     @Override
-    protected void handleSuccessMessage(UserService.LoginObserver observer, Bundle data) {
-        UserService.LoginObserver loginObserver = (UserService.LoginObserver) observer;
+    protected void handleSuccessMessage(ActivityObserver observer, Bundle data) {
         observer.startActivity(data);
     }
 }

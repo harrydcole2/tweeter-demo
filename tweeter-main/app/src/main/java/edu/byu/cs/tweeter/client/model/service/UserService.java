@@ -19,10 +19,6 @@ import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 
 public class UserService extends BaseService {
-
-    public interface LoginObserver extends ActivityObserver {}
-    public interface RegisterObserver extends ActivityObserver {}
-
     public interface LogoutObserver extends ServiceObserver {
         void logout();
     }
@@ -33,13 +29,13 @@ public class UserService extends BaseService {
         executeTask(getUserTask);
     }
 
-    public void login(String username, String password, LoginObserver observer) {
+    public void login(String username, String password, ActivityObserver observer) {
         LoginTask loginTask = new LoginTask(username, password, new LoginHandler(observer));
         executeTask(loginTask);
     }
 
     public void register(String firstName, String lastName, String alias, String password, String imageBytesBase64,
-                         RegisterObserver observer) {
+                         ActivityObserver observer) {
         RegisterTask registerTask = new RegisterTask(firstName, lastName, alias, password,
                 imageBytesBase64, new RegisterHandler(observer));
         executeTask(registerTask);

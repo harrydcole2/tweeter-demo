@@ -6,17 +6,14 @@ import android.os.Bundle;
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.RegisterTask;
+import edu.byu.cs.tweeter.client.model.service.observer.ActivityObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class RegisterPresenter extends AuthenticationPresenter {
-
-    public interface View extends AuthView {
-        String convertImageToBytesBase64(Drawable imageToUpload);
-    }
-
-    public RegisterPresenter(RegisterPresenter.View view) {
+    public RegisterPresenter(AuthView view) {
         super(view);
+        this.view = view;
     }
     public void registerProcedure(String firstName, String lastName, String alias, String password, Drawable imageToUpload) { //TODO: remove dependency
         try {
@@ -24,7 +21,6 @@ public class RegisterPresenter extends AuthenticationPresenter {
             view.setErrorViewText(null);
 
             String imageBytesBase64 = view.convertImageToBytesBase64(imageToUpload);
-            // Send register request.
             register(firstName, lastName, alias, password, imageBytesBase64);
 
         } catch (Exception e) {
@@ -61,7 +57,7 @@ public class RegisterPresenter extends AuthenticationPresenter {
         userService.register(firstName, lastName, alias, password, imageBytesBase64, new RegisterServiceObserver());
     }
 
-    private class RegisterServiceObserver extends AuthServiceObserver<RegisterTask> implements UserService.RegisterObserver {
+    private class RegisterServiceObserver extends AuthServiceObserver<RegisterTask> implements ActivityObserver {
         @Override
         protected String getTaskString() {
             return "register";
