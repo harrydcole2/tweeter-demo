@@ -11,15 +11,12 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class RegisterPresenter extends AuthenticationPresenter {
 
-    private View view;
-    public interface View extends AuthView {
-        String convertImageToBytesBase64(Drawable imageToUpload);
-    }
+    public interface View extends AuthView {}
 
     public RegisterPresenter(RegisterPresenter.View view) {
-        this.view = view;
+        super(view);
     }
-    public void registerProcedure(String firstName, String lastName, String alias, String password, Drawable imageToUpload) {
+    public void registerProcedure(String firstName, String lastName, String alias, String password, Drawable imageToUpload) { //TODO: remove dependency
         try {
             validateRegistration(firstName, lastName, alias, password, imageToUpload);
             view.setErrorViewText(null);
@@ -62,18 +59,7 @@ public class RegisterPresenter extends AuthenticationPresenter {
         userService.register(firstName, lastName, alias, password, imageBytesBase64, new RegisterServiceObserver());
     }
 
-    private class RegisterServiceObserver extends BaseServiceObserver implements UserService.RegisterObserver {
-        @Override
-        public void startActivity(Bundle data) {
-            User registeredUser = (User) data.getSerializable(RegisterTask.USER_KEY);
-            AuthToken authToken = (AuthToken) data.getSerializable(RegisterTask.AUTH_TOKEN_KEY);
-
-            Cache.getInstance().setCurrUser(registeredUser);
-            Cache.getInstance().setCurrUserAuthToken(authToken);
-
-            view.startNewActivity(Cache.getInstance().getCurrUser().getName(), registeredUser);
-        }
-
+    private class RegisterServiceObserver extends AuthServiceObserver<RegisterTask> implements UserService.RegisterObserver {
         @Override
         protected String getTaskString() {
             return "register";

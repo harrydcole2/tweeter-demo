@@ -1,6 +1,7 @@
 package edu.byu.cs.tweeter.client.view.login;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import edu.byu.cs.tweeter.R;
+import edu.byu.cs.tweeter.client.presenter.AuthenticationPresenter;
 import edu.byu.cs.tweeter.client.presenter.LoginPresenter;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -21,7 +23,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Implements the login screen.
  */
-public class LoginFragment extends Fragment implements LoginPresenter.View{
+public class LoginFragment extends Fragment implements AuthenticationPresenter.AuthView{
     private static final String LOG_TAG = "LoginFragment";
 
     private Toast loginToast; //TODO determine what vars can be buried
@@ -87,5 +89,10 @@ public class LoginFragment extends Fragment implements LoginPresenter.View{
     @Override
     public void setErrorViewText(String text) {
         errorView.setText(text);
+    }
+
+    @Override
+    public String convertImageToBytesBase64(Drawable imageToUpload) {
+        return null;
     }
 }

@@ -21,7 +21,6 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 public class UserService extends BaseService {
 
     public interface LoginObserver extends ActivityObserver {}
-
     public interface RegisterObserver extends ActivityObserver {}
 
     public interface LogoutObserver extends ServiceObserver {

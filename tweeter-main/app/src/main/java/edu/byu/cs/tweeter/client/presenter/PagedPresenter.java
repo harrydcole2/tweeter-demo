@@ -10,14 +10,12 @@ import edu.byu.cs.tweeter.client.model.service.observer.ActivityObserver;
 import edu.byu.cs.tweeter.client.model.service.observer.PagedObserver;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public abstract class PagedPresenter<T> extends BasePresenter {
+public abstract class PagedPresenter<T> extends BasePresenter<PagedPresenter.PagedView> {
 
     protected static final int PAGE_SIZE = 10;
     protected T lastItem;
     protected boolean hasMorePages;
     protected boolean isLoading = false;
-
-    protected PagedView<T> view;
 
     public interface PagedView<S> extends BaseView {
         void setLoadingFooter(boolean value);
@@ -47,8 +45,8 @@ public abstract class PagedPresenter<T> extends BasePresenter {
         userService.getUserProfile(Cache.getInstance().getCurrUserAuthToken(), userAlias, new UserServiceObserver());
     }
 
-
     protected abstract void callServiceToLoad(User user);
+
     protected class PagedServiceObserver extends BaseServiceObserver implements PagedObserver<T>{
         @Override
         public void addMoreItems(List items, boolean hasMorePages) {

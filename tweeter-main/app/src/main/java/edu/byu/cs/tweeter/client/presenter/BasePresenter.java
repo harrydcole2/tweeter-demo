@@ -10,12 +10,12 @@ import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 import edu.byu.cs.tweeter.model.domain.Status;
 
-public abstract class BasePresenter {
+public abstract class BasePresenter<T extends BasePresenter.BaseView> {
     protected FollowService followService;
     protected UserService userService;
     protected StatusService statusService;
 
-    protected BaseView view;
+    protected T view;
     public interface BaseView {
         void displayMessage(String message);
     }
@@ -37,5 +37,4 @@ public abstract class BasePresenter {
         }
         protected abstract String getTaskString();
     }
-
 }

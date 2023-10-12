@@ -10,8 +10,7 @@ import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class FeedPresenter extends PagedPresenter<Status>{
-    public interface View extends PagedView<Status> {}
-    public FeedPresenter(FeedPresenter.View view) {
+    public FeedPresenter(PagedView view) {
         this.view = view;
     }
     @Override

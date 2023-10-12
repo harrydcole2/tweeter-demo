@@ -12,8 +12,7 @@ import edu.byu.cs.tweeter.client.model.service.observer.PagedObserver;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class FollowersPresenter extends PagedPresenter<User>{
-    public interface View extends PagedView<User> {}
-    public FollowersPresenter(FollowersPresenter.View view) {
+    public FollowersPresenter(PagedView view) {
         this.view = view;
     }
     @Override

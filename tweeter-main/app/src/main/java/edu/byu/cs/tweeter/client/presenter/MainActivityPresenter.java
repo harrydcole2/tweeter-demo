@@ -11,10 +11,11 @@ import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
+import edu.byu.cs.tweeter.client.view.main.MainActivity;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class MainActivityPresenter extends BasePresenter{
+public class MainActivityPresenter extends BasePresenter<MainActivityPresenter.View> {
     public User getCurrUser() {
         return Cache.getInstance().getCurrUser();
     }
@@ -22,8 +23,6 @@ public class MainActivityPresenter extends BasePresenter{
     public void clearCache() {
         Cache.getInstance().clearCache();
     }
-
-    private View view;
 
     public interface View extends BaseView {
         void setupFollowButton(boolean isFollower);
@@ -69,14 +68,14 @@ public class MainActivityPresenter extends BasePresenter{
         statusService.postStatus(Cache.getInstance().getCurrUserAuthToken(), newStatus, new PostStatusServiceObserver());
     }
 
-    public String getFormattedDateTime() throws ParseException { //TODO destroy this one
+    public String getFormattedDateTime() throws ParseException {
         SimpleDateFormat userFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         SimpleDateFormat statusFormat = new SimpleDateFormat("MMM d yyyy h:mm aaa");
 
         return statusFormat.format(userFormat.parse(LocalDate.now().toString() + " " + LocalTime.now().toString().substring(0, 8)));
     }
 
-    public List<String> parseURLs(String post) { //TODO Presenter takes on this cake
+    public List<String> parseURLs(String post) {
         List<String> containedUrls = new ArrayList<>();
         for (String word : post.split("\\s")) {
             if (word.startsWith("http://") || word.startsWith("https://")) {
@@ -92,7 +91,7 @@ public class MainActivityPresenter extends BasePresenter{
         return containedUrls;
     }
 
-    public List<String> parseMentions(String post) { //TODO Presenter desert
+    public List<String> parseMentions(String post) {
         List<String> containedMentions = new ArrayList<>();
 
         for (String word : post.split("\\s")) {
@@ -107,7 +106,7 @@ public class MainActivityPresenter extends BasePresenter{
         return containedMentions;
     }
 
-    public int findUrlEndIndex(String word) { //TODO Presenter getting fat
+    public int findUrlEndIndex(String word) {
         if (word.contains(".com")) {
             int index = word.indexOf(".com");
             index += 4;

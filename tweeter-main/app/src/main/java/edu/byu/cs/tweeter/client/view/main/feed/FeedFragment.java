@@ -34,6 +34,7 @@ import java.util.List;
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetUserTask;
 import edu.byu.cs.tweeter.client.presenter.FeedPresenter;
+import edu.byu.cs.tweeter.client.presenter.PagedPresenter;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -42,7 +43,7 @@ import edu.byu.cs.tweeter.util.Timestamp;
 /**
  * Implements the "Feed" tab.
  */
-public class FeedFragment extends Fragment implements FeedPresenter.View {
+public class FeedFragment extends Fragment implements PagedPresenter.PagedView<Status> {
     private static final String LOG_TAG = "FeedFragment";
     private static final String USER_KEY = "UserKey";
 
@@ -314,7 +315,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
          * Causes the Adapter to display a loading footer and make a request to get more feed
          * data.
          */
-        void loadMoreItems() { //TODO refactorify
+        void loadMoreItems() {
             presenter.loadMoreItems(user);
         }
 

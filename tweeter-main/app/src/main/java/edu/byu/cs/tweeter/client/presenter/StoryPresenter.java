@@ -13,16 +13,12 @@ import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class StoryPresenter extends PagedPresenter<Status> {
-    public StoryPresenter(StoryPresenter.View view) {
+    public StoryPresenter(PagedView view) {
         this.view = view;
     }
-
     @Override
     protected void callServiceToLoad(User user) {
         statusService.loadMoreItemsForStory(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE,
                 lastItem, new PagedServiceObserver());
     }
-
-    public interface View extends PagedView<Status>{}
-
 }
