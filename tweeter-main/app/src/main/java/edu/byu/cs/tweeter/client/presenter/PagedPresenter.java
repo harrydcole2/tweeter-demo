@@ -17,10 +17,10 @@ public abstract class PagedPresenter<T> extends BasePresenter<PagedPresenter.Pag
     protected boolean hasMorePages;
     protected boolean isLoading = false;
 
-    public interface PagedView<S> extends BaseView {
+    public interface PagedView<T> extends BaseView {
         void setLoadingFooter(boolean value);
 
-        void addMoreItems(List<S> items);
+        void addMoreItems(List<T> items);
 
         void startMainActivity(Bundle bundle);
     }

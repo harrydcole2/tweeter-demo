@@ -7,7 +7,6 @@ import edu.byu.cs.tweeter.model.domain.Status;
  * Message handler (i.e., observer) for GetStoryTask.
  */
 public class GetStoryHandler extends PagedHandler {
-
     public GetStoryHandler(PagedObserver<Status> observer) {
         super(observer);
     }

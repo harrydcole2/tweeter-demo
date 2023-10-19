@@ -20,7 +20,7 @@ public abstract class PagedHandler<T> extends BackgroundTaskHandler {
     protected void handleSuccessMessage(ServiceObserver observer, Bundle data) {
         PagedObserver pagedObserver = (PagedObserver) observer;
 
-        List<T> items = (List<T>) data.getSerializable(GetFeedTask.ITEMS_KEY);
+        List<T> items = (List<T>) data.getSerializable(GetFeedTask.ITEMS_KEY); //TODO from GetFeed to PagedTask
         boolean hasMorePages = data.getBoolean(GetFeedTask.MORE_PAGES_KEY);
         pagedObserver.addMoreItems(items, hasMorePages);
     }
