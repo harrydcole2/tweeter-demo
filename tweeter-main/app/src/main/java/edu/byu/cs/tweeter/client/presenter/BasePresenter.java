@@ -22,7 +22,13 @@ public abstract class BasePresenter<T extends BasePresenter.BaseView> {
     public BasePresenter() {
         this.followService = new FollowService();
         this.userService = new UserService();
-        this.statusService = new StatusService();
+    }
+
+    protected StatusService getStatusService() {
+        if(statusService == null) {
+            statusService = new StatusService();
+        }
+        return statusService;
     }
 
     protected abstract class BaseServiceObserver implements ServiceObserver {

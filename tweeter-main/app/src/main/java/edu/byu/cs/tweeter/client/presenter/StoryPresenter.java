@@ -18,7 +18,7 @@ public class StoryPresenter extends PagedPresenter<Status> {
     }
     @Override
     protected void callServiceToLoad(User user) {
-        statusService.loadMoreItemsForStory(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE,
+        getStatusService().loadMoreItemsForStory(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE,
                 lastItem, new PagedServiceObserver());
     }
 }

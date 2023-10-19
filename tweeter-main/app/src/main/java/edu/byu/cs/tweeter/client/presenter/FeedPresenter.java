@@ -15,7 +15,7 @@ public class FeedPresenter extends PagedPresenter<Status>{
     }
     @Override
     protected void callServiceToLoad(User user) {
-        statusService.loadMoreItemsForFeed(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE,
+        getStatusService().loadMoreItemsForFeed(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE,
                 lastItem, new PagedServiceObserver());
     }
 }

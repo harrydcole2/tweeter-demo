@@ -66,7 +66,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivityPresenter.V
 
     public void postStatus(String post) {
         Status newStatus = new Status(post, Cache.getInstance().getCurrUser(), System.currentTimeMillis(), parseURLs(post), parseMentions(post));
-        statusService.postStatus(Cache.getInstance().getCurrUserAuthToken(), newStatus, new PostStatusServiceObserver());
+        getStatusService().postStatus(Cache.getInstance().getCurrUserAuthToken(), newStatus, new PostStatusServiceObserver());
     }
 
     public String getFormattedDateTime() throws ParseException {
